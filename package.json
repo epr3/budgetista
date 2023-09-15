@@ -1,6 +1,6 @@
 {
 	"name": "budgetista",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -11,7 +11,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"prepare": "husky install",
-		"commit": "cz"
+		"commit": "cz",
+		"release": "standard-version --no-verify"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.7.1",
@@ -36,6 +37,7 @@
 		"inquirer": "^9.2.11",
 		"prettier": "^3.0.0",
 		"prettier-plugin-svelte": "^3.0.3",
+		"standard-version": "^9.5.0",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
 		"svelte-sequential-preprocessor": "^2.0.1",

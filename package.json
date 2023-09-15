@@ -11,8 +11,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "commit": "cz",
-    "release": "standard-version --no-verify"
+    "commit": "cz"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
@@ -37,7 +36,6 @@
     "inquirer": "^9.2.11",
     "prettier": "^3.0.0",
     "prettier-plugin-svelte": "^3.0.3",
-    "standard-version": "^9.5.0",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.3",
     "svelte-sequential-preprocessor": "^2.0.1",

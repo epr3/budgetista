@@ -15,6 +15,16 @@ enum CURRENCY {
   USD
 }
 
+enum PASSPORT_TYPE {
+  PASSWORD
+  GOOGLE
+}
+
+enum TOKEN_TYPE {
+  VALIDATION
+  RESET_PASSWORD
+}
+
 model Settings {
   id       String   @id @default(uuid())
   currency CURRENCY
@@ -47,16 +57,38 @@ model Category {
   @@map("categories")
 }
 
-model User {
+model UserPassport {
   id           String        @id @default(uuid())
-  nickname     String        @map("first_name")
-  email        String        @unique
-  verifiedAt   DateTime?     @map("verified_at")
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  categories   Category[]
-  transactions Transaction[]
-  settings     Settings?
+  password     String?
+  userId       String        @map("user_id")
+  passportType PASSPORT_TYPE @map("passport_type")
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_passports")
+}
+
+model Token {
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now()) @map("created_at")
+  email     String     @unique
+  tokenType TOKEN_TYPE @map("token_type")
+  user      User       @relation(fields: [email], references: [email], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  nickname      String         @map("first_name")
+  email         String         @unique
+  verifiedAt    DateTime?      @map("verified_at")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  categories    Category[]
+  transactions  Transaction[]
+  userPassports UserPassport[]
+  tokens        Token[]
+  settings      Settings?
 
   @@map("users")
 }

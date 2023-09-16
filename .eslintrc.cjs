@@ -27,4 +27,7 @@ module.exports = {
       },
     },
   ],
+  rules: {
+    "no-import-assign": 0,
+  },
 };

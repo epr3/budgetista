@@ -19,4 +19,12 @@ export default defineConfig({
       },
     }),
   ],
+  theme: {
+    colors: {
+      primary: "#262935",
+      secondary: "#f7f6f2",
+      accent: "#91c751",
+      accent2: "#0588fd",
+    },
+  },
 });

@@ -1,5 +1,9 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+
+import "vite-plugin-pwa/info";
+import "vite-plugin-pwa/svelte";
+
 declare global {
   namespace App {
     // interface Error {}

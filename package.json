@@ -33,9 +33,9 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-svelte": "^2.30.0",
     "husky": "^8.0.3",
-    "inquirer": "^9.2.11",
     "prettier": "^3.0.0",
     "prettier-plugin-svelte": "^3.0.3",
+    "prisma": "^5.3.1",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.3",
     "svelte-sequential-preprocessor": "^2.0.1",
@@ -44,5 +44,11 @@
     "unocss": "^0.55.7",
     "vite": "^4.4.2"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@felte/validator-yup": "^1.1.3",
+    "@prisma/client": "5.3.1",
+    "felte": "^1.2.12",
+    "yup": "^1.2.0"
+  }
 }

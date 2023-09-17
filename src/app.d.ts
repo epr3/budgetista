@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+
 import type { Session } from "svelte-kit-cookie-session";
 import type { User } from "@prisma/client";
 

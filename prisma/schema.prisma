@@ -58,12 +58,13 @@ model Category {
 }
 
 model UserPassport {
-  id           String        @id @default(uuid())
-  password     String?
-  userId       String        @map("user_id")
-  passportType PASSPORT_TYPE @map("passport_type")
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String        @id @default(uuid())
+  hashedPassword String?       @map("hashed_password")
+  userId         String        @map("user_id")
+  passportType   PASSPORT_TYPE @map("passport_type")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("user_passports")
 }
 
@@ -72,6 +73,7 @@ model Token {
   createdAt DateTime   @default(now()) @map("created_at")
   email     String     @unique
   tokenType TOKEN_TYPE @map("token_type")
+  token     String
   user      User       @relation(fields: [email], references: [email], onDelete: Cascade)
 
   @@map("tokens")
@@ -79,11 +81,11 @@ model Token {
 
 model User {
   id            String         @id @default(uuid())
-  nickname      String         @map("first_name")
+  nickname      String
   email         String         @unique
   verifiedAt    DateTime?      @map("verified_at")
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
   categories    Category[]
   transactions  Transaction[]
   userPassports UserPassport[]

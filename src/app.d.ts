@@ -2,13 +2,13 @@
 // for information about these interfaces
 
 import type { Session } from "svelte-kit-cookie-session";
-import type { User } from "@prisma/client";
 
 import "vite-plugin-pwa/info";
 import "vite-plugin-pwa/svelte";
 
 type SessionData = {
-  user: User;
+  email: string;
+  isVerified: boolean;
 };
 
 declare global {

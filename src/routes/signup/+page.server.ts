@@ -1,34 +1,39 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { prisma } from "$lib";
+import { superValidate } from "sveltekit-superforms/server";
+
 import bcrypt from "bcrypt";
 
-import type { Actions } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 import { PASSPORT_TYPE, TOKEN_TYPE } from "@prisma/client";
+
+import { z } from "zod";
+
+const schema = z.object({
+  nickname: z.string().nonempty(),
+  email: z.string().nonempty().email(),
+  password: z.string().nonempty(),
+});
+
+export const load: PageServerLoad = async () => {
+  // Server API:
+  const form = await superValidate(schema);
+
+  // Always return { form } in load and form actions.
+  return { form };
+};
 
 export const actions: Actions = {
   default: async ({ request, locals }) => {
-    const formData = await request.formData();
-    const email = formData.get("email");
-    const nickname = formData.get("nickname");
-    const password = formData.get("password");
+    const form = await superValidate(request, schema);
+    const { nickname, email, password } = form.data;
 
-    if (typeof email !== "string" || email.length < 4) {
-      return fail(400, {
-        message: "Invalid email",
-      });
+    // Convenient validation check:
+    if (!form.valid) {
+      // Again, always return { form } and things will just work.
+      return fail(422, { form });
     }
 
-    if (typeof nickname !== "string" || nickname.length < 4 || nickname.length > 31) {
-      return fail(400, {
-        message: "Invalid nickname",
-      });
-    }
-
-    if (typeof password !== "string" || password.length < 6 || password.length > 255) {
-      return fail(400, {
-        message: "Invalid password",
-      });
-    }
     try {
       const user = await prisma.$transaction(async (tx) => {
         const salt = await bcrypt.genSalt();
@@ -60,7 +65,7 @@ export const actions: Actions = {
         return user;
       });
 
-      await locals.session.set({ user });
+      await locals.session.set({ email: user.email, isVerified: !!user.verifiedAt });
     } catch (e) {
       // this part depends on the database you're using
       // check for unique constraint error in user table

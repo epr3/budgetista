@@ -5,28 +5,22 @@ import { superValidate } from "sveltekit-superforms/server";
 import bcrypt from "bcrypt";
 
 import type { Actions, PageServerLoad } from "./$types";
-import { PASSPORT_TYPE, TOKEN_TYPE } from "@prisma/client";
+import { PASSPORT_TYPE } from "@prisma/client";
 
-import { z } from "zod";
-
-const schema = z.object({
-  nickname: z.string().nonempty(),
-  email: z.string().nonempty().email(),
-  password: z.string().nonempty(),
-});
+import { loginSchema } from "$lib/schemas";
 
 export const load: PageServerLoad = async () => {
   // Server API:
-  const form = await superValidate(schema);
+  const form = await superValidate(loginSchema);
 
   // Always return { form } in load and form actions.
-  return { form };
+  return { loginForm: form };
 };
 
 export const actions: Actions = {
   default: async ({ request, locals }) => {
-    const form = await superValidate(request, schema);
-    const { nickname, email, password } = form.data;
+    const form = await superValidate(request, loginSchema);
+    const { email, password } = form.data;
 
     // Convenient validation check:
     if (!form.valid) {
@@ -35,35 +29,26 @@ export const actions: Actions = {
     }
 
     try {
-      const user = await prisma.$transaction(async (tx) => {
-        const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const token = await bcrypt.hash(email, 10);
-
-        const user = await tx.user.create({
-          data: {
-            nickname,
-            email,
+      const user = await prisma.user.findFirstOrThrow({
+        where: {
+          email,
+        },
+        include: {
+          userPassports: {
+            where: {
+              passportType: PASSPORT_TYPE.PASSWORD,
+            },
           },
-        });
-        await tx.userPassport.create({
-          data: {
-            passportType: PASSPORT_TYPE.PASSWORD,
-            hashedPassword,
-            userId: user.id,
-          },
-        });
-
-        await tx.token.create({
-          data: {
-            email: user.email,
-            tokenType: TOKEN_TYPE.VALIDATION,
-            token,
-          },
-        });
-
-        return user;
+        },
       });
+
+      const ok = await bcrypt.compare(password, user.userPassports[0].hashedPassword!);
+
+      if (!ok) {
+        return fail(401, {
+          message: "Invalid email or password",
+        });
+      }
 
       await locals.session.set({ email: user.email, isVerified: !!user.verifiedAt });
     } catch (e) {

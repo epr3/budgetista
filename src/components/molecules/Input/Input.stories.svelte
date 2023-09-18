@@ -18,5 +18,5 @@
 <Story name="Default" args={{ value: "", name: "email", type: "email", label: "Email" }} />
 <Story
   name="Error"
-  args={{ value: "", name: "email", type: "email", label: "Email", error: "Email is invalid" }}
+  args={{ value: "", name: "email", type: "email", label: "Email", errors: ["Email is invalid"] }}
 />

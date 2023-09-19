@@ -18,7 +18,8 @@ declare global {
       session: Session<SessionData>;
     }
     interface PageData {
-      session: SessionData;
+      session?: SessionData;
+      flash?: { type: "SUCCESS" | "ERROR"; message: string };
     }
     // interface Platform {}
   }

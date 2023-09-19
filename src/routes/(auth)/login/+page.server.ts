@@ -1,6 +1,7 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { prisma } from "$lib";
 import { superValidate } from "sveltekit-superforms/server";
+import { setFlash } from "sveltekit-flash-message/server";
 
 import bcrypt from "bcrypt";
 
@@ -18,7 +19,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-  default: async ({ request, locals }) => {
+  default: async ({ request, locals, ...rest }) => {
     const form = await superValidate(request, loginSchema);
     const { email, password } = form.data;
 
@@ -42,12 +43,22 @@ export const actions: Actions = {
         },
       });
 
+      if (!user.verifiedAt) {
+        setFlash(
+          { type: "ERROR", message: "Please verify your email" },
+          { request, locals, ...rest }
+        );
+        return fail(400);
+      }
+
       const ok = await bcrypt.compare(password, user.userPassports[0].hashedPassword!);
 
       if (!ok) {
-        return fail(401, {
-          message: "Invalid email or password",
-        });
+        setFlash(
+          { type: "ERROR", message: "Invalid email or password" },
+          { request, locals, ...rest }
+        );
+        return fail(400);
       }
 
       await locals.session.set({ email: user.email, isVerified: !!user.verifiedAt });

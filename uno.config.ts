@@ -1,5 +1,5 @@
 // uno.config.ts
-import { defineConfig, presetUno, presetWebFonts } from "unocss";
+import { defineConfig, presetUno, presetWebFonts, presetIcons } from "unocss";
 import transformerVariantGroup from "@unocss/transformer-variant-group";
 import extractorSvelte from "@unocss/extractor-svelte";
 
@@ -7,6 +7,7 @@ export default defineConfig({
   extractors: [extractorSvelte()],
   transformers: [transformerVariantGroup()],
   presets: [
+    presetIcons({}),
     presetUno(),
     presetWebFonts({
       fonts: {
@@ -19,6 +20,7 @@ export default defineConfig({
       },
     }),
   ],
+  shortcuts: [[/^square-(.*)$/, ([, c]) => `w-${c} h-${c}`]],
   theme: {
     colors: {
       primary: "#262935",

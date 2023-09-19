@@ -2,6 +2,29 @@
   import "@unocss/reset/tailwind.css";
   import "uno.css";
 
+  import { getFlash } from "sveltekit-flash-message";
+  import { page } from "$app/stores";
+
+  import Toast from "$molecules/Toast/Toast.svelte";
+  import { addToast } from "$molecules/Toast/Toast.svelte";
+
+  const flash = getFlash(page);
+
+  flash.subscribe(($flash) => {
+    if (!$flash) return;
+
+    addToast({
+      data: {
+        title: $flash.type,
+        description: $flash.message,
+      },
+    });
+
+    // Clearing the flash message could sometimes
+    // be required here to avoid double-toasting.
+    flash.set(undefined);
+  });
+
   // import { onMount } from "svelte";
 
   // import { pwaInfo } from "virtual:pwa-info";
@@ -33,6 +56,7 @@
 <svelte:head>
   {@html webManifest}
 </svelte:head> -->
+<Toast />
 
 <slot />
 

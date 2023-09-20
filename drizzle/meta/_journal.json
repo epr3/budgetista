@@ -8,6 +8,13 @@
       "when": 1695163370476,
       "tag": "0000_wet_invisible_woman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1695209074631,
+      "tag": "0001_previous_vindicator",
+      "breakpoints": true
     }
   ]
 }

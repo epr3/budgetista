@@ -13,7 +13,7 @@
     "prepare": "husky install",
     "commit": "cz",
     "generate": "drizzle-kit generate:pg",
-    "migrate": "tsx ./src/db/migrate",
+    "migrate": "tsx ./drizzle/migrate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

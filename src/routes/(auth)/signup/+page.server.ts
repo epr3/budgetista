@@ -1,13 +1,13 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { prisma } from "$lib";
+import { db, schema } from "$lib";
 import { superValidate } from "sveltekit-superforms/server";
 
 import bcrypt from "bcrypt";
 
 import type { Actions, PageServerLoad } from "./$types";
-import { PASSPORT_TYPE, TOKEN_TYPE } from "@prisma/client";
 
 import { registerSchema } from "$lib/schemas";
+import { PassportType, TokenType } from "$lib/models";
 
 export const load: PageServerLoad = async () => {
   // Server API:
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-  default: async ({ request, locals }) => {
+  default: async ({ request }) => {
     const form = await superValidate(request, registerSchema);
     const { nickname, email, password } = form.data;
 
@@ -29,37 +29,23 @@ export const actions: Actions = {
     }
 
     try {
-      const user = await prisma.$transaction(async (tx) => {
+      await db.transaction(async (tx) => {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         const token = await bcrypt.hash(email, 10);
 
-        const user = await tx.user.create({
-          data: {
-            nickname,
-            email,
-          },
-        });
-        await tx.userPassport.create({
-          data: {
-            passportType: PASSPORT_TYPE.PASSWORD,
-            hashedPassword,
-            userId: user.id,
-          },
+        const user = await tx.insert(schema.users).values({ nickname, email }).returning();
+
+        await tx.insert(schema.userPassports).values({
+          passportType: PassportType.PASSWORD,
+          hashedPassword,
+          userId: user[0].id,
         });
 
-        await tx.token.create({
-          data: {
-            email: user.email,
-            tokenType: TOKEN_TYPE.VALIDATION,
-            token,
-          },
-        });
+        await tx.insert(schema.tokens).values({ email, tokenType: TokenType.VALIDATION, token });
 
-        return user;
+        return user[0];
       });
-
-      await locals.session.set({ email: user.email, isVerified: !!user.verifiedAt });
     } catch (e) {
       // this part depends on the database you're using
       // check for unique constraint error in user table

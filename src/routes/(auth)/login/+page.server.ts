@@ -1,14 +1,16 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { prisma } from "$lib";
 import { superValidate } from "sveltekit-superforms/server";
 import { setFlash } from "sveltekit-flash-message/server";
 
 import bcrypt from "bcrypt";
 
 import type { Actions, PageServerLoad } from "./$types";
-import { PASSPORT_TYPE } from "@prisma/client";
+import { db, schema } from "$lib";
+
+import { PassportType } from "$lib/models";
 
 import { loginSchema } from "$lib/schemas";
+import { eq, and } from "drizzle-orm";
 
 export const load: PageServerLoad = async () => {
   // Server API:
@@ -30,20 +32,11 @@ export const actions: Actions = {
     }
 
     try {
-      const user = await prisma.user.findFirstOrThrow({
-        where: {
-          email,
-        },
-        include: {
-          userPassports: {
-            where: {
-              passportType: PASSPORT_TYPE.PASSWORD,
-            },
-          },
-        },
+      const user = await db.query.users.findFirst({
+        where: eq(schema.users.email, email),
       });
 
-      if (!user.verifiedAt) {
+      if (!user || !user.verifiedAt) {
         setFlash(
           { type: "ERROR", message: "Please verify your email" },
           { request, locals, ...rest }
@@ -51,7 +44,22 @@ export const actions: Actions = {
         return fail(400);
       }
 
-      const ok = await bcrypt.compare(password, user.userPassports[0].hashedPassword!);
+      const userPassport = await db.query.userPassports.findFirst({
+        where: and(
+          eq(schema.userPassports.userId, user.id),
+          eq(schema.userPassports.passportType, PassportType.PASSWORD)
+        ),
+      });
+
+      if (!userPassport) {
+        setFlash(
+          { type: "ERROR", message: "Invalid email or password" },
+          { request, locals, ...rest }
+        );
+        return fail(400);
+      }
+
+      const ok = await bcrypt.compare(password, userPassport.hashedPassword!);
 
       if (!ok) {
         setFlash(

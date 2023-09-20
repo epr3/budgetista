@@ -5,9 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@iconify-json/heroicons':
-    specifier: ^1.1.12
-    version: 1.1.12
+  '@iconify-json/lucide':
+    specifier: ^1.1.128
+    version: 1.1.128
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
@@ -2049,8 +2049,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify-json/heroicons@1.1.12:
-    resolution: {integrity: sha512-9tsn/xUU+HX56OngEDRTej4LzVm2qcMVLvEJ+q+1ZJBO4sjMDxycmbHq16HGl1LOeVG21fq4jNZHslVveVCwSQ==}
+  /@iconify-json/lucide@1.1.128:
+    resolution: {integrity: sha512-01gydOYLIFAdCcQ9vw6pJa/ffu3LsbRRAhdOYX8rRSRvg73EDgiN878upxudB0V1ayZ2i/w+IQUlJ3cBnb+QwA==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false

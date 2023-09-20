@@ -1,3 +1,9 @@
-<p>App Layout</p>
+<script lang="ts">
+  import Navbar from "$organisms/Navbar.svelte";
+</script>
 
-<slot />
+<Navbar />
+
+<div class="lg:pl-28 py-4">
+  <slot />
+</div>

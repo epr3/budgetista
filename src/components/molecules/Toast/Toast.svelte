@@ -50,7 +50,7 @@
         </div>
 
         <div
-          class="i-heroicons-x-mark cursor-pointer text-gray-900 font-bold absolute right-4 top-4 square-6"
+          class="i-lucide-x cursor-pointer text-gray-900 font-bold absolute right-4 top-4 square-6"
           use:melt={$close(id)}
         />
       </div>

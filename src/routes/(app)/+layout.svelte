@@ -4,6 +4,6 @@
 
 <Navbar />
 
-<div class="lg:pl-28 py-4">
+<div class="lg:pl-28 py-4 pr-4">
   <slot />
 </div>

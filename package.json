@@ -70,6 +70,7 @@
   "dependencies": {
     "@iconify-json/lucide": "^1.1.128",
     "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.10",
     "drizzle-orm": "^0.28.6",
     "postgres": "^3.3.5",
     "svelte-kit-cookie-session": "^4.0.0"

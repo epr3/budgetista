@@ -2,8 +2,9 @@
   import Navbar from "$organisms/Navbar.svelte";
 </script>
 
-<Navbar />
-
-<div class="lg:pl-28 py-4 pr-4">
-  <slot />
+<div class="grid grid-rows-[1fr_6rem] lg:(grid-rows-1 grid-cols-[6rem_1fr])">
+  <Navbar />
+  <div>
+    <slot />
+  </div>
 </div>

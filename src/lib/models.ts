@@ -18,6 +18,16 @@ export enum TokenType {
   RESET_PASSWORD = "RESET_PASSWORD",
 }
 
+export enum TransactionType {
+  EXPENSE = "EXPENSE",
+  INCOME = "INCOME",
+}
+
+export const transactionTypeEnum = pgEnum("transaction_type", [
+  TransactionType.EXPENSE,
+  TransactionType.INCOME,
+]);
+
 export const currencyEnum = pgEnum("currency", [Currency.EUR, Currency.RON, Currency.USD]);
 
 export const passportTypeEnum = pgEnum("passport_type", [
@@ -63,9 +73,11 @@ export const usersRelations = relations(users, ({ many, one }) => ({
 
 export const transactions = pgTable("transactions", {
   id: uuid("id").primaryKey().defaultRandom(),
+  type: transactionTypeEnum("type").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   amount: numeric("amount").notNull(),
   description: varchar("description"),
+
   categoryId: uuid("category_id")
     .references(() => categories.id)
     .notNull(),

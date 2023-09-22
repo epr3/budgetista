@@ -1,7 +1,7 @@
 <script lang="ts">
   export let color: "PRIMARY" | "SECONDARY" | "SUCCESS" | "ERROR" = "PRIMARY";
   export let type: "button" | "submit" = "button";
-  export let href: string;
+  export let href: string | undefined = undefined;
 
   let theme = "";
 
@@ -23,8 +23,11 @@
   }
 </script>
 
-{#if href}
-  <a class="square-20 rounded flex items-center justify-center {theme}" {href}><slot /></a>
-{:else}
-  <button class="square-20 rounded {theme}" {type} on:click><slot /></button>
-{/if}
+<svelte:element
+  this={href ? "a" : "button"}
+  type={href ? undefined : type}
+  class="square-20 rounded flex items-center justify-center {theme}"
+  {href}
+>
+  <slot />
+</svelte:element>

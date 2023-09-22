@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { Button } from "bits-ui";
+
+  export let href: string = "";
   export let color: "PRIMARY" | "SECONDARY" | "SUCCESS" | "ERROR" = "PRIMARY";
   export let type: "button" | "submit" = "button";
 
@@ -22,4 +25,6 @@
   }
 </script>
 
-<button class="px-4 py-2 rounded font-medium {theme}" {type} on:click><slot /></button>
+<Button.Root {type} class="square-20 rounded flex items-center justify-center {theme}" {href}>
+  <slot />
+</Button.Root>

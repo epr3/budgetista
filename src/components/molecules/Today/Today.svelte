@@ -5,7 +5,7 @@
   $: convertedDate = dayjs(date);
 </script>
 
-<div class="flex bg-primary p-4">
+<div class="flex bg-primary p-4 rounded shadow-lg">
   <div
     class="px-4 py-2 rounded-lg bg-secondary text-gray-9 text-4xl flex items-center justify-center"
   >

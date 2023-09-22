@@ -15,6 +15,13 @@
       "when": 1695209074631,
       "tag": "0001_previous_vindicator",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1695318945132,
+      "tag": "0002_illegal_charles_xavier",
+      "breakpoints": true
     }
   ]
 }

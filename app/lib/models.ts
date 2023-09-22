@@ -1,6 +1,7 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
+import { createId } from "@paralleldrive/cuid2";
 
-import { pgEnum, pgTable, uuid, numeric, varchar, timestamp, date } from "drizzle-orm/pg-core";
+import { real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export enum Currency {
   RON = "RON",
@@ -23,42 +24,38 @@ export enum TransactionType {
   INCOME = "INCOME",
 }
 
-export const transactionTypeEnum = pgEnum("transaction_type", [
-  TransactionType.EXPENSE,
-  TransactionType.INCOME,
-]);
-
-export const currencyEnum = pgEnum("currency", [Currency.EUR, Currency.RON, Currency.USD]);
-
-export const passportTypeEnum = pgEnum("passport_type", [
-  PassportType.GOOGLE,
-  PassportType.PASSWORD,
-]);
-
-export const tokenTypeEnum = pgEnum("token_type", [TokenType.VALIDATION, TokenType.RESET_PASSWORD]);
-
-export const users = pgTable("users", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  nickname: varchar("nickname").notNull(),
-  email: varchar("email").notNull().unique(),
-  verifiedAt: timestamp("verified_at"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+export const users = sqliteTable("users", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  nickname: text("nickname").notNull(),
+  email: text("email").notNull().unique(),
+  verifiedAt: text("verified_at"),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const settings = pgTable("settings", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  currency: currencyEnum("currency"),
-  userId: uuid("user_id")
+export const settings = sqliteTable("settings", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  currency: text("currency", { enum: [Currency.RON, Currency.EUR, Currency.USD] }),
+  userId: text("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
 });
 
-export const categories = pgTable("categories", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  icon: varchar("icon"),
-  name: varchar("name").notNull(),
-  userId: uuid("user_id")
+export const categories = sqliteTable("categories", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  icon: text("icon"),
+  name: text("name").notNull(),
+  userId: text("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
 });
@@ -71,38 +68,52 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   }),
 }));
 
-export const transactions = pgTable("transactions", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  type: transactionTypeEnum("type").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  amount: numeric("amount").notNull(),
-  description: varchar("description"),
+export const transactions = sqliteTable("transactions", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  type: text("type", { enum: [TransactionType.INCOME, TransactionType.EXPENSE] }).notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  amount: real("amount").notNull(),
+  description: text("description"),
 
-  categoryId: uuid("category_id")
+  categoryId: text("category_id")
     .references(() => categories.id)
     .notNull(),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
 });
 
-export const userPassports = pgTable("user_passports", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  hashedPassword: varchar("hashed_password"),
-  userId: uuid("user_id")
+export const userPassports = sqliteTable("user_passports", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  hashedPassword: text("hashed_password"),
+  userId: text("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
-  passportType: passportTypeEnum("passport_type").notNull(),
+  passportType: text("passport_type", {
+    enum: [PassportType.PASSWORD, PassportType.GOOGLE],
+  }).notNull(),
 });
 
-export const tokens = pgTable("tokens", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  createdAt: date("created_at").notNull().defaultNow(),
-  email: varchar("email")
+export const tokens = sqliteTable("tokens", {
+  id: text("id")
+    .primaryKey()
+    .$default(() => createId()),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_DATE`),
+  email: text("email")
     .references(() => users.email, { onDelete: "cascade" })
     .notNull(),
-  tokenType: tokenTypeEnum("token_type").notNull(),
-  token: varchar("token").notNull(),
+  tokenType: text("token_type", {
+    enum: [TokenType.VALIDATION, TokenType.RESET_PASSWORD],
+  }).notNull(),
+  token: text("token").notNull(),
 });
 
 export const schema = {
@@ -112,7 +123,4 @@ export const schema = {
   settings,
   categories,
   transactions,
-  tokenTypeEnum,
-  passportTypeEnum,
-  currencyEnum,
 };

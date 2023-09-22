@@ -1,24 +1,26 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
-import { config } from "dotenv";
+import "dotenv/config";
 
-config();
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
+import { createClient } from "@libsql/client";
 
-const sql = postgres(process.env.DATABASE_URL as string, { max: 1 });
-const db = drizzle(sql);
-async function runMigrations() {
-  console.log("Running migrations");
+const client = createClient({
+  url: process.env.DATABASE_URL as string,
+  authToken: process.env.DATABASE_AUTH_TOKEN,
+});
 
-  await migrate(db, { migrationsFolder: "drizzle" });
-
-  console.log("Migrated successfully");
-
-  process.exit(0);
+const db = drizzle(client);
+async function main() {
+  try {
+    await migrate(db, {
+      migrationsFolder: "./drizzle/migrations",
+    });
+    console.log("Tables migrated!");
+    process.exit(0);
+  } catch (error) {
+    console.error("Error performing migration: ", error);
+    process.exit(1);
+  }
 }
 
-runMigrations().catch((e) => {
-  console.error("Migration failed");
-  console.error(e);
-  process.exit(1);
-});
+main();

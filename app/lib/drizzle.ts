@@ -1,12 +1,11 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 
 import postgres from "postgres";
-import { DATABASE_URL } from "$env/static/private";
 
 import { schema } from "./models";
 
 // for query purposes
-const queryClient = postgres(DATABASE_URL);
+const queryClient = postgres(process.env.DATABASE_URL as string);
 export const db = drizzle(queryClient, {
   schema,
 });

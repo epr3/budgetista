@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { Button, type Builder } from "bits-ui";
+
   export let color: "PRIMARY" | "SECONDARY" | "SUCCESS" | "ERROR" = "PRIMARY";
   export let type: "button" | "submit" = "button";
-  export let href: string | undefined = undefined;
+  export let builders: Builder[] = [];
 
   let theme = "";
 
@@ -23,11 +25,11 @@
   }
 </script>
 
-<svelte:element
-  this={href ? "a" : "button"}
-  type={href ? undefined : type}
+<Button.Root
   class="square-20 rounded flex items-center justify-center {theme}"
-  {href}
+  {type}
+  {builders}
+  {...$$restProps}
 >
   <slot />
-</svelte:element>
+</Button.Root>

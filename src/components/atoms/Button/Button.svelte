@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from "bits-ui";
+  import { Button, type Builder } from "bits-ui";
 
-  export let href: string = "";
   export let color: "PRIMARY" | "SECONDARY" | "SUCCESS" | "ERROR" = "PRIMARY";
   export let type: "button" | "submit" = "button";
+  export let builders: Builder[] = [];
 
   let theme = "";
 
@@ -25,6 +25,11 @@
   }
 </script>
 
-<Button.Root {type} class="square-20 rounded flex items-center justify-center {theme}" {href}>
+<Button.Root
+  {type}
+  class="square-20 rounded flex items-center justify-center {theme}"
+  {builders}
+  {...$$restProps}
+>
   <slot />
 </Button.Root>

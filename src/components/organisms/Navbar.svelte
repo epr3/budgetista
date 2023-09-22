@@ -1,5 +1,8 @@
 <script lang="ts">
+  import * as Dialog from "$molecules/Dialog";
+
   import IconButton from "$atoms/IconButton/IconButton.svelte";
+  import Button from "$atoms/Button/Button.svelte";
 </script>
 
 <div
@@ -17,7 +20,26 @@
     <div class="i-lucide-receipt square-10" />
   </IconButton>
 
-  <IconButton href="/" color="SECONDARY">
-    <div class="i-lucide-plus square-10" />
-  </IconButton>
+  <Dialog.Root>
+    <Dialog.Trigger asChild let:builder>
+      <IconButton href="/" color="SECONDARY" builders={[builder]}>
+        <div class="i-lucide-plus square-10" />
+      </IconButton>
+    </Dialog.Trigger>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>Edit profile</Dialog.Title>
+        <Dialog.Description>
+          Make changes to your profile here. Click save when you're done.
+        </Dialog.Description>
+      </Dialog.Header>
+      <div class="grid gap-4 py-4">
+        <p>Dialog Body</p>
+      </div>
+
+      <Dialog.Footer>
+        <Button type="submit">Save changes</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Root>
 </div>

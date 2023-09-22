@@ -1,6 +1,5 @@
 <script lang="ts">
   import IconButton from "$atoms/IconButton/IconButton.svelte";
-  import Dialog from "./Dialog.svelte";
 </script>
 
 <div
@@ -18,9 +17,7 @@
     <div class="i-lucide-receipt square-10" />
   </IconButton>
 
-  <Dialog let:open>
-    <IconButton href="/" color="SECONDARY" on:click={() => open()}>
-      <div class="i-lucide-plus square-10" />
-    </IconButton>
-  </Dialog>
+  <IconButton href="/" color="SECONDARY">
+    <div class="i-lucide-plus square-10" />
+  </IconButton>
 </div>

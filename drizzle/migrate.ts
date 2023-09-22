@@ -5,7 +5,7 @@ import { config } from "dotenv";
 
 config();
 
-const sql = postgres(process.env.DATABASE_URL, { max: 1 });
+const sql = postgres(process.env.DATABASE_URL as string, { max: 1 });
 const db = drizzle(sql);
 async function runMigrations() {
   console.log("Running migrations");

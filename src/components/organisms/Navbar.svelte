@@ -28,18 +28,17 @@
     </Dialog.Trigger>
     <Dialog.Content>
       <Dialog.Header>
-        <Dialog.Title>Edit profile</Dialog.Title>
-        <Dialog.Description>
-          Make changes to your profile here. Click save when you're done.
-        </Dialog.Description>
+        <Dialog.Title>Add transaction</Dialog.Title>
       </Dialog.Header>
-      <div class="grid gap-4 py-4">
-        <p>Dialog Body</p>
-      </div>
+      <form action="">
+        <div class="grid gap-4 py-4">
+          <p>Dialog Body</p>
+        </div>
 
-      <Dialog.Footer>
-        <Button type="submit">Save changes</Button>
-      </Dialog.Footer>
+        <Dialog.Footer>
+          <Button type="submit">Save changes</Button>
+        </Dialog.Footer>
+      </form>
     </Dialog.Content>
   </Dialog.Root>
 </div>

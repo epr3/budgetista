@@ -8,5 +8,5 @@
 <div class="flex flex-col gap-12 h-full lg:(gap-72 w-1/2 pr-12)">
   <h1 class="text-accent2 font-bold text-5xl uppercase">Register</h1>
 
-  <RegisterForm data={data.registerForm} />
+  <RegisterForm form={data.registerForm} />
 </div>

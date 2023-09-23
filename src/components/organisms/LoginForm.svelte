@@ -1,39 +1,27 @@
 <script lang="ts">
   import type { SuperValidated } from "sveltekit-superforms";
-  import { superForm } from "sveltekit-superforms/client";
-  import type { RegisterSchema } from "$lib/schemas";
-  import Input from "$molecules/Input/Input.svelte";
-  import Button from "$atoms/Button/Button.svelte";
 
-  export let data: SuperValidated<RegisterSchema>;
+  import * as Form from "$atoms/Form";
 
-  const { form, errors, enhance, constraints } = superForm(data);
+  import { loginSchema, type LoginSchema } from "$lib/schemas";
+
+  export let form: SuperValidated<LoginSchema>;
 </script>
 
-<form method="POST" class="flex flex-col gap-4" use:enhance novalidate>
-  <Input
-    name="email"
-    label="E-mail"
-    type="email"
-    placeholder="money@budgetista.xyz"
-    errors={$errors.email}
-    bind:value={$form.email}
-    constraints={$constraints.email}
-    fullWidth
-  />
-  <Input
-    name="password"
-    label="Password"
-    type="password"
-    errors={$errors.password}
-    bind:value={$form.password}
-    constraints={$constraints.password}
-    fullWidth
-  />
-  <p class="text-gray-9 text-right font-semibold">
-    Don't have an account? Sign up <a class="text-blue-400 hover:text-blue-700" href="/signup">
-      here
-    </a>
-  </p>
-  <Button type="submit" color="SUCCESS">Submit</Button>
-</form>
+<Form.Root class="flex flex-col gap-4" method="POST" {form} schema={loginSchema} let:config>
+  <Form.Field {config} name="email">
+    <Form.Item>
+      <Form.Label>E-mail</Form.Label>
+      <Form.Input />
+      <Form.Validation />
+    </Form.Item>
+  </Form.Field>
+  <Form.Field {config} name="password">
+    <Form.Item>
+      <Form.Label>Password</Form.Label>
+      <Form.Input type="password" />
+      <Form.Validation />
+    </Form.Item>
+  </Form.Field>
+  <Form.Button>Submit</Form.Button>
+</Form.Root>

@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { cn } from "$lib/utils";
   import { Button, type Builder } from "bits-ui";
 
   export let color: "PRIMARY" | "SECONDARY" | "SUCCESS" | "ERROR" = "PRIMARY";
   export let type: "button" | "submit" = "button";
   export let builders: Builder[] = [];
+
+  let className: string | undefined = undefined;
 
   let theme = "";
 
@@ -23,11 +26,13 @@
     default:
       theme = "bg-primary text-white hover:bg-blueGray";
   }
+
+  export { className as class };
 </script>
 
 <Button.Root
   {type}
-  class="square-20 rounded flex items-center justify-center {theme}"
+  class={cn("px-4 py-2 rounded flex items-center justify-center", theme, className)}
   {builders}
   {...$$restProps}
 >

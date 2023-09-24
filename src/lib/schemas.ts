@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TransactionType } from "./models";
 
 export const registerSchema = z.object({
   nickname: z.string().nonempty(),
@@ -14,3 +15,12 @@ export const loginSchema = z.object({
 });
 
 export type LoginSchema = typeof loginSchema;
+
+export const addTransactionSchema = z.object({
+  type: z.nativeEnum(TransactionType),
+  amount: z.coerce.number().multipleOf(0.01),
+  description: z.string(),
+  date: z.coerce.date(),
+});
+
+export type AddTransactionSchema = typeof addTransactionSchema;

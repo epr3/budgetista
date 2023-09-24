@@ -34,6 +34,7 @@
   {type}
   {builders}
   {...$$restProps}
+  on:click
 >
   <slot />
 </Button.Root>

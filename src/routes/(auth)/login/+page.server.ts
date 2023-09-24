@@ -27,6 +27,7 @@ export const actions: Actions = {
 
     // Convenient validation check:
     if (!form.valid) {
+      setFlash({ type: "ERROR", message: "Invalid data" }, { request, locals, ...rest });
       // Again, always return { form } and things will just work.
       return fail(422, { form });
     }

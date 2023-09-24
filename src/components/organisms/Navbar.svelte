@@ -21,11 +21,11 @@
     <div class="i-lucide-home square-10" />
   </IconButton>
 
-  <IconButton href="/" color="SECONDARY">
+  <IconButton href="/profile" color="SECONDARY">
     <div class="i-lucide-user square-10" />
   </IconButton>
 
-  <IconButton href="/" color="SECONDARY">
+  <IconButton href="/transactions" color="SECONDARY">
     <div class="i-lucide-receipt square-10" />
   </IconButton>
 

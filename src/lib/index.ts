@@ -1,4 +1,4 @@
-import { db } from "./drizzle";
+import { db } from "./drizzle.server";
 import { schema } from "./models";
 import dayjs from "./dayjs";
 

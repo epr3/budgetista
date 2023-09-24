@@ -57,6 +57,7 @@ export const actions: Actions = {
       // }
       return fail(500, {
         message: "An unknown error occurred",
+        form,
       });
     }
     // redirect to

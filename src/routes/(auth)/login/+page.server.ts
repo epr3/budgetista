@@ -70,7 +70,7 @@ export const actions: Actions = {
         return fail(400);
       }
 
-      await locals.session.set({ email: user.email, isVerified: !!user.verifiedAt });
+      await locals.session.set({ email: user.email, id: user.id, isVerified: !!user.verifiedAt });
     } catch (e) {
       // this part depends on the database you're using
       // check for unique constraint error in user table
@@ -82,6 +82,7 @@ export const actions: Actions = {
       // }
       return fail(500, {
         message: "An unknown error occurred",
+        form,
       });
     }
     // redirect to

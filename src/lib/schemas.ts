@@ -24,3 +24,24 @@ export const addTransactionSchema = z.object({
 });
 
 export type AddTransactionSchema = typeof addTransactionSchema;
+
+export const updatePasswordSchema = z.object({
+  oldPassword: z.string().nonempty(),
+  newPassword: z.string().nonempty(),
+});
+
+export type UpdatePasswordSchema = typeof updatePasswordSchema;
+
+export const profileSchema = z.object({
+  email: z.string().nonempty().email(),
+  nickname: z.string().nonempty(),
+});
+
+export type ProfileSchema = typeof profileSchema;
+
+export const categorySchema = z.object({
+  name: z.string().nonempty(),
+  icon: z.string().optional(),
+});
+
+export type CategorySchema = typeof categorySchema;

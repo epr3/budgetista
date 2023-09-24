@@ -3,10 +3,11 @@
 
 import type { Session } from "svelte-kit-cookie-session";
 
-import "vite-plugin-pwa/info";
-import "vite-plugin-pwa/svelte";
+// import "vite-plugin-pwa/info";
+// import "vite-plugin-pwa/svelte";
 
 type SessionData = {
+  id: string;
   email: string;
   isVerified: boolean;
 };

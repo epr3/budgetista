@@ -8,9 +8,20 @@ import { db, schema } from "$lib";
 import { and, eq } from "drizzle-orm";
 import { PassportType } from "$lib/models";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ request, locals, ...rest }) => {
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.id, locals.session.data.id),
+  });
+
+  if (!user) {
+    setFlash({ type: "ERROR", message: "User not found" }, { request, locals, ...rest });
+    return fail(500);
+  }
   // Server API:
-  const profileForm = await superValidate(profileSchema);
+  const profileForm = await superValidate(
+    { email: user.email, nickname: user.nickname },
+    profileSchema
+  );
   const updatePasswordForm = await superValidate(updatePasswordSchema);
   const categoryForm = await superValidate(categorySchema);
 

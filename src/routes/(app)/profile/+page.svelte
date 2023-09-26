@@ -9,11 +9,15 @@
 <div class="grid grid-rows-2 gap-12 p-12 items-center lg:(mx-auto max-w-2xl)">
   <div class="flex flex-col gap-4">
     <h3 class="font-semibold text-2xl">Profile</h3>
-    <ProfileForm form={data.profileForm} />
+    {#if data.profileForm}
+      <ProfileForm form={data.profileForm} />
+    {/if}
   </div>
 
   <div class="flex flex-col gap-4">
     <h3 class="font-semibold text-2xl">Update Password</h3>
-    <UpdatePasswordForm form={data.updatePasswordForm} />
+    {#if data.updatePasswordForm}
+      <UpdatePasswordForm form={data.updatePasswordForm} />
+    {/if}
   </div>
 </div>

@@ -3,8 +3,8 @@
     id: string;
     description: string | null;
     categoryId: string;
-    amount: string;
-    createdAt: Date;
+    amount: number;
+    createdAt: string;
   };
   export let header: string;
   export let transactions: Transaction[];

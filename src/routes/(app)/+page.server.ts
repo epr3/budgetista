@@ -39,7 +39,7 @@ export const actions: Actions = {
         .insert(schema.transactions)
         .values({
           type: form.data.type,
-          amount: form.data.amount.toString(),
+          amount: form.data.amount,
           description: form.data.description,
           categoryId: locals.session.data.id,
           userId: locals.session.data.id,

@@ -13,6 +13,7 @@
     "prepare": "husky install",
     "commit": "cz",
     "generate": "drizzle-kit generate:sqlite",
+    "push": "drizzle-kit push:sqlite",
     "migrate": "tsx ./drizzle/migrate"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@unocss/reset": "^0.55.7",
     "@unocss/transformer-variant-group": "^0.55.7",
     "@vite-pwa/sveltekit": "^0.2.7",
+    "better-sqlite3": "^9.0.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^16.3.1",

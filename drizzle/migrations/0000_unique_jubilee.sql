@@ -1,3 +1,14 @@
+CREATE TABLE `users` (
+	`id` text PRIMARY KEY NOT NULL,
+	`nickname` text NOT NULL,
+	`email` text NOT NULL,
+	`verified_at` text,
+	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);
+--> statement-breakpoint
 CREATE TABLE `categories` (
 	`id` text PRIMARY KEY NOT NULL,
 	`icon` text,
@@ -41,14 +52,3 @@ CREATE TABLE `user_passports` (
 	`passport_type` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );
---> statement-breakpoint
-CREATE TABLE `users` (
-	`id` text PRIMARY KEY NOT NULL,
-	`nickname` text NOT NULL,
-	`email` text NOT NULL,
-	`verified_at` text,
-	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
---> statement-breakpoint
-CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);

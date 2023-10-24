@@ -1,7 +1,7 @@
 import { auth } from "@/lib/lucia";
 import { LibsqlError } from "@libsql/client";
 import { NextResponse } from "next/server";
-import { redirect } from "next/navigation";
+import { createId } from "@paralleldrive/cuid2";
 
 import type { NextRequest } from "next/server";
 
@@ -10,6 +10,7 @@ export const POST = async (request: NextRequest) => {
 
   try {
     await auth.createUser({
+      userId: createId(),
       key: {
         providerId: "username", // auth method
         providerUserId: data.email, // unique id when using "username" auth method

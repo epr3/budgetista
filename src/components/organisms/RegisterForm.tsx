@@ -40,9 +40,12 @@ const RegisterForm = () => {
       method: "POST",
       body: JSON.stringify(values),
       redirect: "manual",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-    console.log(response.status);
-    if (response.status === 0) {
+
+    if (response.status === 0 || response.ok) {
       // redirected
       // when using `redirect: "manual"`, response status 0 is returned
       return router.push("/signup/success");

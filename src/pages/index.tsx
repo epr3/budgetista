@@ -2,8 +2,10 @@ import { ReactElement, useMemo } from "react";
 import dayjs from "@/lib/dayjs";
 
 import { Today } from "@/components/molecules/Today/Today";
+import { NextPageWithLayout } from "./_app";
+import { getLayout } from "@/components/layouts/AppLayout";
 
-export default function Index() {
+const Index: NextPageWithLayout = () => {
   const currentDay = useMemo(() => dayjs(), []);
 
   return (
@@ -17,4 +19,8 @@ export default function Index() {
       </div> */}
     </div>
   );
-}
+};
+
+Index.getLayout = getLayout;
+
+export default Index;

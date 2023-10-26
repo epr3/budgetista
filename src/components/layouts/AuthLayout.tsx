@@ -1,7 +1,8 @@
 import Image from "next/image";
 import bg from "@/assets/auth-bg.svg";
+import { ReactElement } from "react";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="hidden lg:block absolute h-screen w-1/2 right-0 top-0">
@@ -11,4 +12,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="p-12 h-screen">{children}</div>
     </>
   );
+}
+
+export function getLayout(page: ReactElement) {
+  return <AuthLayout>{page}</AuthLayout>;
 }

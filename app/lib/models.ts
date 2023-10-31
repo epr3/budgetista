@@ -116,9 +116,18 @@ export const tokens = sqliteTable("tokens", {
   token: text("token").notNull(),
 });
 
+export const userPassportRelations = relations(userPassports, ({ one }) => ({
+  user: one(users, {
+    fields: [userPassports.userId],
+    references: [users.id],
+  }),
+}));
+
 export const schema = {
   users,
   userPassports,
+  userPassportRelations,
+  usersRelations,
   tokens,
   settings,
   categories,

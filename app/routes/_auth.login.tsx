@@ -1,23 +1,20 @@
-import { json, redirect, type ActionFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { parse } from "@conform-to/zod";
+import { type ActionFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
 
 import { LoginForm } from "$organisms/LoginForm";
-import { loginSchema } from "$lib/schemas";
+// import { loginSchema } from "$lib/schemas";
+import { authenticator } from "$lib/auth.server";
 
 export async function action({ request }: ActionFunctionArgs) {
+  // const session = await sessionStorage.getSession(request.headers.get("Cookie"));
   const formData = await request.formData();
 
-  // Replace `Object.fromEntries()` with the parse function
-  const submission = parse(formData, { schema: loginSchema });
+  // const { email, password } = Object.fromEntries(formData);
 
-  // Report the submission to client
-  // 1) if the intent is not `submit`, or
-  // 2) if there is any error
-  if (submission.intent !== "submit" || !submission.value) {
-    return json(submission);
-  }
-
-  return redirect("/");
+  return await authenticator.authenticate("email-pass", request, {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    context: { formData },
+  });
 }
 export default function Login() {
   return (
